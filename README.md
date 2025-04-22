@@ -48,6 +48,11 @@ environment:
    git clone https://github.com/goroutiner/auth_service.git
    cd auth_service
    ```
+3. Запуск сервиса выполняется с помощью команды:
+
+    ```sh
+    make run 
+    ```
 
 ---
 
