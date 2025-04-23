@@ -14,6 +14,42 @@
 
 ---
 
+## 🔥 API Эндпоинты
+
+1️⃣ **Генерация токенов**
+
+**GET** `/api/auth/{user_id}`
+
+**Тело ответа**:
+```json
+{
+  "access_token": "your_access_token",
+  "refresh_token": "your_refresh_token"
+}
+```
+
+2️⃣ **Обновление токенов**
+
+**POST** `/api/auth/refresh`
+
+**Тело запроса**:
+```json
+{
+  "access_token": "your_access_token",
+  "refresh_token": "your_refresh_token"
+}
+```
+
+**Тело ответа**:
+```json
+{
+  "access_token": "new_access_token",
+  "refresh_token": "new_refresh_token"
+}
+```
+
+---
+
 ### 🔧 Предварительная настройка переменных окружений в файле `compose.yaml`:
 
 - Переменные окружения для **auth_service**:
@@ -44,15 +80,15 @@ environment:
 1. Убедитесь, что у вас установлен **Docker** и **Docker Compose**.
 2. Склонируйте репозиторий:
 
-   ```sh
-   git clone https://github.com/goroutiner/auth_service.git
-   cd auth_service
-   ```
+```sh
+git clone https://github.com/goroutiner/auth_service.git
+cd auth_service
+```
 3. Запуск сервиса выполняется с помощью команды:
 
-    ```sh
-    make run 
-    ```
+```sh
+make run 
+ ```
 
 ---
 
