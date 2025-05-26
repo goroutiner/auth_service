@@ -1,0 +1,49 @@
+services:
+  auth_service:
+    build: .
+    container_name: auth_service
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SERVICE_SOCKET: ":8080" # сокет соединения, на котором работает сервис
+      MODE: "postgres" # режим работы сервиса
+      PSQL_URL: "postgres://root:password@postgres:5432/mydb?sslmode=disable" # адрес Postgres
+      SECRET: "secret" # секрет для подписи jwt токена
+      SENDER_EMAIL: "" # email, с которого будут отправлятся предупреждения пользователям
+      PASSWORD_EMAIL: "" # пароль от почты
+      SMTP_HOST: "" # адрес хоста, на котором развернут SMTP-сервер
+      MAX_TOKENS_PER_USER: 5 # максимальное количество активных refresh-токенов для одного пользователя
+      RATE_LIMIT: 20 # значение RPS на пользователя
+      BUFFER_LIMIT: 40 # вместимость буфера запросов
+      CLEANUP_INTERVAL: 1 # интервал для чистки словаря с лимитерами неактивных пользователей (в минутах)
+      INACTIVITY_LIMIT: 5 # период неактивности пользователя (в минутах)
+    ports:
+      - "8080:8080"
+    networks:
+      - my-network
+    tty: true
+  postgres:
+    image: postgres:latest
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: "root"
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_DB: "mydb"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - my-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root -d mydb"]
+      interval: 5s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  postgres-data:
+
+networks:
+  my-network:
