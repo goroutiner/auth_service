@@ -31,15 +31,15 @@ jobs:
 
       - name: Run Services Tests
         run: |
-          test-services
+          make test-services
 
       - name: Run Database Tests
         run: |
-          test-database
+          make test-database
 
       - name: Run Memory Tests
         run: |
-          test-memory
+          make test-memory
 
       - name: Run tests with coverage
         run: go test -coverprofile=coverage.out ./...
