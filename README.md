@@ -1,3 +1,6 @@
+[![codecov](https://codecov.io/gh/goroutiner/auth_service/graph/badge.svg)](https://codecov.io/gh/goroutiner/auth_service)
+
+
 <h3 align="center">
   <div align="center">
     <h1>Authentication Service 🔐</h1>
