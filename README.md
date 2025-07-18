@@ -1,3 +1,4 @@
+[![Authentication service](https://github.com/goroutiner/auth_service/actions/workflows/ci-cd.yaml/badge.svg?branch=main)](https://github.com/goroutiner/auth_service/actions/workflows/ci-cd.yaml) 
 [![codecov](https://codecov.io/gh/goroutiner/auth_service/graph/badge.svg)](https://codecov.io/gh/goroutiner/auth_service)
 
 
