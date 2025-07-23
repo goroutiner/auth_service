@@ -14,6 +14,10 @@ vet: fmt
 
 # при выполнении тестов должен быть запущен Docker
 
+test-handlers: vet
+	@echo "Запуск тестов для handlers:"
+	@go test -v ./internal/handlers/...
+
 test-services: vet
 	@echo "Запуск тестов для services:"
 	@go test -v ./internal/services/...

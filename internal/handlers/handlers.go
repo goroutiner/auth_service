@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 // AuthHandler представляет обработчик для работы с аутентификацией.
@@ -18,7 +19,7 @@ func RegisterAuthHandler(service services.AuthServiceInterface) *AuthHandler {
 	return &AuthHandler{service: service}
 }
 
-// GenerateTokens обрабатывает POST-запрос для генерации пары токенов (доступа и обновления).
+// GenerateTokens обрабатывает GET-запрос для генерации пары токенов (доступа и обновления).
 // Ожидает user_id в параметрах пути и IP-адрес клиента.
 // Возвращает JSON с новой парой токенов.
 func (h *AuthHandler) GenerateTokens() func(http.ResponseWriter, *http.Request) {
@@ -29,12 +30,10 @@ func (h *AuthHandler) GenerateTokens() func(http.ResponseWriter, *http.Request) 
 		)
 
 		userId := r.PathValue("user_id")
-		if userId == "" {
-			log.Println("userId is empty")
-			http.Error(w, "Invalid query parameters", http.StatusBadRequest)
+		if _, err := strconv.Atoi(userId); err != nil {
+			http.Error(w, "user_id in URL must be integer", http.StatusBadRequest)
 			return
 		}
-
 		ip := r.RemoteAddr
 		if ip == "" {
 			log.Println("IP address is empty")
@@ -45,7 +44,7 @@ func (h *AuthHandler) GenerateTokens() func(http.ResponseWriter, *http.Request) 
 		newTokensPair, err = h.service.GenerateTokens(userId, ip)
 		if err != nil {
 			log.Println(err)
-			http.Error(w, "Failed to generate token pair", http.StatusInternalServerError)
+			http.Error(w, "Failed to generate token pair", http.StatusUnauthorized)
 			return
 		}
 
@@ -74,9 +73,14 @@ func (s *AuthHandler) RefreshTokens() func(http.ResponseWriter, *http.Request) {
 			return
 		}
 
-		if req.AccessToken == "" || req.RefreshToken == "" {
-			log.Println("access or refresh tokens are empty")
-			http.Error(w, "Invalid JSON", http.StatusBadRequest)
+		switch {
+		case req.AccessToken == "":
+			log.Println("access token is empty")
+			http.Error(w, "Access token is required", http.StatusBadRequest)
+			return
+		case req.RefreshToken == "":
+			log.Println("refresh token is empty")
+			http.Error(w, "Refresh token is required", http.StatusBadRequest)
 			return
 		}
 
