@@ -20,7 +20,7 @@ func generateTestAccessToken(secret string, claims jwt.MapClaims) (string, error
 func TestParseAccessToken(t *testing.T) {
 	t.Run("successful parsing", func(t *testing.T) {
 		testJti := "test-jti"
-		testUserId := "user-123"
+		testUserId := "123"
 		config.Secret = "test_secret"
 		now := time.Now().Unix()
 		exp := now + 3600
@@ -52,7 +52,7 @@ func TestParseAccessToken(t *testing.T) {
 	})
 	t.Run("missing claims", func(t *testing.T) {
 		testJti := "test-jti"
-		testUserId := "user-123"
+		testUserId := "123"
 		config.Secret = "test_secret"
 		now := time.Now().Unix()
 		claims := jwt.MapClaims{
@@ -95,7 +95,7 @@ func TestParseAccessToken(t *testing.T) {
 	})
 	t.Run("invalid claimTypes", func(t *testing.T) {
 		validJti := "test-jti"
-		validUserId := "user-123"
+		validUserId := "123"
 		config.Secret = "test_secret"
 		now := time.Now().Unix()
 		config.Secret = "test_secret"

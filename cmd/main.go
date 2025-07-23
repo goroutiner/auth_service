@@ -37,11 +37,11 @@ func main() {
 	}
 
 	authService := services.NewAuthService(store)
-	hadler := handlers.RegisterAuthHandler(authService)
+	handler := handlers.RegisterAuthHandler(authService)
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("GET /api/auth/{user_id}", hadler.GenerateTokens())
-	mux.HandleFunc("POST /api/auth/refresh", hadler.RefreshTokens())
+	mux.HandleFunc("GET /api/auth/{user_id}", handler.GenerateTokens())
+	mux.HandleFunc("POST /api/auth/refresh", handler.RefreshTokens())
 
 	serv := &http.Server{
 		Addr:         config.ServiceSocket,
